@@ -57,12 +57,14 @@ public class InterfazSqlite {
   */
  public void insertar(String dato1,String dato2,String dato3){
      try {
-         PreparedStatement ps = conectar.prepareStatement("Insert into Alumno (dni,nombre,apellidos) "
+         PreparedStatement ps = conectar.prepareStatement("Insert into Alumno(dni,nombre,apellidos) "
                  + "values(?,?,?)");
+         this.contarFilas();
          ps.setString(1,dato1);
          ps.setString(2,dato2);
          ps.setString(3,dato3);
          ps.execute();
+        
      } catch (SQLException ex) {
          System.out.println("Error al insertar la fila "+ex.getMessage());
      }
@@ -94,9 +96,9 @@ public class InterfazSqlite {
          resultado = ver.executeQuery();
               System.out.println("insertado con exito");
             while (resultado.next()) {
-                System.out.println("dni"+resultado.getString("dni"));
-                System.out.println("nombre"+resultado.getString("nombre"));
-                System.out.println("apellidos"+resultado.getString("apellidos"));          
+                System.out.println("dni : "+resultado.getString("dni"));
+                System.out.println("nombre : "+resultado.getString("nombre"));
+                System.out.println("apellidos : "+resultado.getString("apellidos"));          
    
  }
      } catch (SQLException ex) {
@@ -125,5 +127,17 @@ public void modificar(String dato1,String dato2,String dato3,String dato4){
 
     
     
+}
+public void contarFilas(){
+    
+     try {
+         Statement st = conectar.createStatement();
+         ResultSet result = st.executeQuery("Select count (*) as rowcount from Alumno");
+         result.next();
+         int cuenta = st.getUpdateCount();
+         System.out.println(cuenta + " - "+"Filas Insertadas");
+     } catch (SQLException ex) {
+         System.out.println("Error de conexión : "+ex.getMessage());
+     }
 }
 }
