@@ -60,7 +60,7 @@ public class InterfazSqlite {
      try {
          PreparedStatement ps = conectar.prepareStatement("Insert into Alumno(dni,nombre,apellidos) "
                  + "values(?,?,?)");
-        
+         this.contarFilas();
          ps.setString(1,dato1);
          ps.setString(2,dato2);
          ps.setString(3,dato3);
@@ -100,8 +100,8 @@ public class InterfazSqlite {
                 System.out.println("dni : "+resultado.getString("dni"));
                 System.out.println("nombre : "+resultado.getString("nombre"));
                 System.out.println("apellidos : "+resultado.getString("apellidos"));
-           contar = ver.getUpdateCount();
-                System.out.println(contar + " filas en total");
+      
+               this.contarFilas();
  }
      } catch (SQLException ex) {
          System.out.println("Error al insertar : "+ex.getMessage());
@@ -122,7 +122,7 @@ public void modificar(String dato1,String dato2,String dato3,String dato4){
        try{ 
             PreparedStatement actualiza = conectar.prepareStatement("update Alumno set dni ='"+dato1+"',nombre ='"+dato2+"',apellidos ='"+dato3+"' where dni="+dato4);
                 actualiza.execute();
-        
+                this.contarFilas();
                 System.out.println("Registro actualizado"); 
         }catch(SQLException ex){ 
             System.out.println("Error al actualizar el registro, verifique que ha introducido bien los datos a actualizar: "+ex.getMessage());
@@ -131,6 +131,16 @@ public void modificar(String dato1,String dato2,String dato3,String dato4){
     
     
 }
-
+public void contarFilas(){
+    
+     try {
+         Statement st = conectar.createStatement();
+         ResultSet result = st.executeQuery("Select count (*) as rowcount from Alumno");
+         result.next();
+         int cuenta = result.getInt("rowcount");
+         System.out.println(cuenta + " - "+"Filas en total");
+     } catch (SQLException ex) {
+         System.out.println("Error de conexión : "+ex.getMessage());
+     }
 }
-
+}
