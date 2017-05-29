@@ -19,6 +19,7 @@ public class InterfazSqlite {
  private Statement st;
  ResultSet resultado;
  String dato1,dato2,dato3,dato4;
+ int contar;
 
 /**
  * Recibe por parámetro la dirección en la cual se haya la base de datos
@@ -77,9 +78,8 @@ public class InterfazSqlite {
       try {
             Statement st =  conectar.createStatement();
             st.execute("DELETE from Alumno where dni ="+"'"+dato1+"'");
-           
-     
-            System.out.println("Éxito al borrar el alumno");
+             contar = st.getUpdateCount();   
+            System.out.println(contar +" Fila/s Borradas");         
         } catch (SQLException ex) {
             System.out.println("El dni introducido es erroneo "+ex.getMessage());
         }
@@ -98,8 +98,8 @@ public class InterfazSqlite {
             while (resultado.next()) {
                 System.out.println("dni : "+resultado.getString("dni"));
                 System.out.println("nombre : "+resultado.getString("nombre"));
-                System.out.println("apellidos : "+resultado.getString("apellidos"));          
-   
+                System.out.println("apellidos : "+resultado.getString("apellidos"));
+               
  }
      } catch (SQLException ex) {
          System.out.println("Error al insertar : "+ex.getMessage());
@@ -120,6 +120,7 @@ public void modificar(String dato1,String dato2,String dato3,String dato4){
        try{ 
             PreparedStatement actualiza = conectar.prepareStatement("update Alumno set dni ='"+dato1+"',nombre ='"+dato2+"',apellidos ='"+dato3+"' where dni="+dato4);
                 actualiza.execute();
+                this.contarFilas();
                 System.out.println("Registro actualizado"); 
         }catch(SQLException ex){ 
             System.out.println("Error al actualizar el registro, verifique que ha introducido bien los datos a actualizar: "+ex.getMessage());
@@ -135,7 +136,7 @@ public void contarFilas(){
          ResultSet result = st.executeQuery("Select count (*) as rowcount from Alumno");
          result.next();
          int cuenta = st.getUpdateCount();
-         System.out.println(cuenta + " - "+"Filas Insertadas");
+         System.out.println(cuenta + " - "+"Registros Actualizados");
      } catch (SQLException ex) {
          System.out.println("Error de conexión : "+ex.getMessage());
      }
