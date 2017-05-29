@@ -89,6 +89,7 @@ public class InterfazSqlite {
  }
  /**
   * Muestra todos los campos de la base creada anteriormente
+  * implementado Contarfilas(ver método contarFilas)
   */
  public void mostrar(){
        
@@ -131,6 +132,9 @@ public void modificar(String dato1,String dato2,String dato3,String dato4){
     
     
 }
+/**
+ * Se usa para contar el total de filas en una base de datos,usada en el método mostrar (ver método mostrar)
+ */
 public void contarFilas(){
     
      try {
